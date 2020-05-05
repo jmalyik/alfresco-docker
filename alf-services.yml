@@ -1,0 +1,48 @@
+version: '3.5'
+
+services:
+
+  mypostgresql:
+    image: my/postgresql
+    container_name: postgres:12.2
+    hostname: mypostgresql
+    mem_limit: 512m
+    environment:
+        - POSTGRES_PASSWORD=******
+        - POSTGRES_USER=alfresco
+        - POSTGRES_DB=alfresco
+    command: postgres -c max_connections=300 -c log_min_messages=LOG
+    ports:
+       - 5432:5432
+    volumes:
+       - /dockerdata/postgres/data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  myldap:
+    image: my/ldap
+    container_name: myldap
+    hostname: myldap
+    ports:
+      - 636:636
+      - 389:389
+    restart: unless-stopped
+    command: [--copy-service, --loglevel, debug]
+    volumes:
+      - /dockerdata/ldap/database:/var/lib/ldap
+      - /dockerdata/ldap/config:/etc/ldap/slapd.d
+
+  myalfresco:
+    image: my/alfresco
+    container_name: myalfresco
+    ports:
+      - 8240:8080
+    volumes:
+      - /dockerdata/alfresco/alf_data:/alf_data
+    restart: unless-stopped
+    links:
+      - mypostgresql
+      - myldap
+    depends_on:
+      - mypostgresql
+      - myldap
+

@@ -1,0 +1,59 @@
+version: 1
+
+
+#dn: dc=koszi,dc=org
+#dc: koszi
+#objectClass: top
+#objectClass: domain
+
+dn: ou=Users,dc=koszi,dc=org
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: uid=viewer,ou=Users,dc=koszi,dc=org
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Viewer user
+sn: viewer
+uid: viewer
+userPassword: viewer
+mail: viewer@szia.hu
+
+dn: uid=admin,ou=Users,dc=koszi,dc=org
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Administrator user
+sn: admin
+uid: admin
+userPassword: admin
+mail: admin@szia.hu
+
+dn: uid=nobody,ou=Users,dc=koszi,dc=org
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Nobody user (no roles)
+sn: nobody
+uid: nobody
+userPassword: nobody
+mail: nobody@szia.hu
+
+dn: ou=Roles,dc=koszi,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Roles
+
+dn: cn=ADMIN,ou=Roles,dc=koszi,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: ADMIN
+member: uid=ADMIN,ou=Users,dc=koszi,dc=org
+
+dn: cn=VIEWER,ou=Roles,dc=koszi,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: VIEWER
+member: uid=VIEWER,ou=Users,dc=koszi,dc=org
